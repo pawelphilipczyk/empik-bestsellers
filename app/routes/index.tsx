@@ -1,24 +1,24 @@
 export default function Index() {
   return (
     <div style={{ fontFamily: "system-ui, sans-serif", lineHeight: "1.4" }}>
-      <h1>Welcome to Remix</h1>
+      <h1>Empik Bestsellers</h1>
       <ul>
         <li>
           <a
             target="_blank"
-            href="https://remix.run/tutorials/blog"
+            href="https://www.empik.com/bestsellery/ksiazki"
             rel="noreferrer"
           >
-            15m Quickstart Blog Tutorial
+            TOP 100 Books
           </a>
         </li>
         <li>
           <a
             target="_blank"
-            href="https://remix.run/tutorials/jokes"
+            href="https://app.supabase.com/project/ffhywchyftfmmkbszwub"
             rel="noreferrer"
           >
-            Deep Dive Jokes App Tutorial
+            Supabase
           </a>
         </li>
         <li>
