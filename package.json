@@ -14,6 +14,7 @@
     "@remix-run/netlify-edge": "experimental-netlify-edge",
     "@remix-run/react": "experimental-netlify-edge",
     "@remix-run/server-runtime": "experimental-netlify-edge",
+    "cheerio": "^1.0.0-rc.12",
     "cross-env": "^7.0.3",
     "isbot": "^3.4.6",
     "react": "^18.0.0",
@@ -22,7 +23,7 @@
   "devDependencies": {
     "@remix-run/dev": "experimental-netlify-edge",
     "@remix-run/eslint-config": "experimental-netlify-edge",
-    "@remix-run/serve": "experimental-netlify-edge",
+    "@remix-run/serve": "^0.0.0-nightly-fea8f60-20220728",
     "@types/react": "^18.0.5",
     "@types/react-dom": "^18.0.1",
     "eslint": "^8.11.0",
