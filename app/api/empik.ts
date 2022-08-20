@@ -1,4 +1,6 @@
 import { load } from "cheerio";
+import fetch from "node-fetch";
+
 const feed = "https://www.empik.com/bestsellery/ksiazki";
 
 const getPageUrl = (start: string = "0") =>
@@ -21,7 +23,8 @@ type Book = {
 };
 
 async function fetchPage(url: string) {
-  return fetch(url).then((response) => response.text());
+  return fetch(url)
+    .then((response) => response.text())
 }
 
 function parsePage(html: string) {
@@ -33,7 +36,7 @@ function parsePage(html: string) {
     const author = $(".ta-product-smartauthor", elem).text().trim();
     const image = $("img", elem).attr("lazy-img");
     const score = $(".score", elem).text().trim();
-    const url = $("a", elem).attr('href');
+    const url = $("a", elem).attr("href");
     const price = $(".ta-price-tile", elem)
       .text()
       .split("\n")
