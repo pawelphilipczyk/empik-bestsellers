@@ -1,38 +1,30 @@
 {
-  "name": "remix-template-netlify",
   "private": true,
-  "description": "",
-  "license": "",
   "sideEffects": false,
   "scripts": {
     "build": "remix build",
-    "dev": "remix dev",
-    "start": "cross-env NODE_ENV=production netlify dev"
+    "dev": "remix dev"
   },
   "dependencies": {
-    "@netlify/functions": "latest",
-    "@remix-run/netlify-edge": "experimental-netlify-edge",
-    "@remix-run/react": "experimental-netlify-edge",
-    "@remix-run/server-runtime": "experimental-netlify-edge",
+    "@remix-run/node": "^1.6.8",
+    "@remix-run/react": "^1.6.8",
+    "@remix-run/vercel": "^1.6.8",
     "@supabase/supabase-js": "^1.35.6",
+    "@vercel/node": "^2.4.4",
     "cheerio": "^1.0.0-rc.12",
-    "cross-env": "^7.0.3",
-    "dotenv": "^16.0.1",
-    "isbot": "^3.4.6",
-    "node-fetch": "^3.2.10",
-    "react": "^18.0.0",
-    "react-dom": "^18.0.0"
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
   },
   "devDependencies": {
-    "@remix-run/dev": "experimental-netlify-edge",
-    "@remix-run/eslint-config": "experimental-netlify-edge",
-    "@remix-run/serve": "^0.0.0-nightly-fea8f60-20220728",
-    "@types/react": "^18.0.5",
-    "@types/react-dom": "^18.0.1",
-    "eslint": "^8.11.0",
-    "typescript": "^4.5.5"
+    "@remix-run/dev": "^1.6.8",
+    "@remix-run/eslint-config": "^1.6.8",
+    "@remix-run/serve": "^1.6.8",
+    "@types/react": "^18.0.15",
+    "@types/react-dom": "^18.0.6",
+    "eslint": "^8.20.0",
+    "typescript": "^4.7.4"
   },
   "engines": {
-    "node": ">=16"
+    "node": ">=14"
   }
 }

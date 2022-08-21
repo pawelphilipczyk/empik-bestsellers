@@ -31,7 +31,7 @@ function parsePage(html: string) {
   const books: Partial<Book>[] = [];
   const $ = load(html);
 
-  $(".search-list-item").each((i, elem) => {
+  $(".search-list-item").each((i: number, elem: Element) => {
     const [, title] = $(".ta-product-title", elem).text().split("\n");
     const author = $(".ta-product-smartauthor", elem).text().trim();
     const image = $("img", elem).attr("lazy-img");
