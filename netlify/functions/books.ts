@@ -1,7 +1,7 @@
 import type { Handler } from "@netlify/functions";
 import { createClient } from "@supabase/supabase-js";
 import dotenv from "dotenv";
-import { fetchBestsellerBooks } from "~/api/empik";
+import { fetchBestsellerBooks } from "~/api/empik.server";
 
 dotenv.config();
 

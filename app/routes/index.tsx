@@ -1,6 +1,6 @@
 import { useLoaderData } from "@remix-run/react";
 import { json } from "@remix-run/server-runtime";
-import { fetchBestsellerBooks } from "~/api/empik";
+import { fetchBestsellerBooks } from "~/api/empik.server";
 
 export async function loader() {
   const books = await fetchBestsellerBooks();

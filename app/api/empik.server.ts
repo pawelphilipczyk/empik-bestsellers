@@ -1,4 +1,5 @@
 import { load } from "cheerio";
+import fetch from "node-fetch";
 
 const feed = "https://www.empik.com/bestsellery/ksiazki";
 
