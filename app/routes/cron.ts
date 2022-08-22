@@ -1,3 +1,4 @@
+import * as core from "@actions/core";
 import type { LoaderArgs } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import { createClient } from "@supabase/supabase-js";
@@ -23,9 +24,11 @@ export async function loader({ request }: LoaderArgs) {
 
     return json({ success: true }, 200);
   } else {
+    const message = "Unauthorized";
+    core.setFailed(message);
     return json(
       {
-        message: "Unauthorized",
+        message,
       },
       {
         status: 401,
