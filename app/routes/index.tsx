@@ -1,14 +1,24 @@
 import { useLoaderData } from "@remix-run/react";
 import { json } from "@remix-run/server-runtime";
-import { fetchBestsellerBooks } from "~/api/empik.server";
+import { supabase } from "~/api/supabase.server";
+import type { BooksResponse } from "~/types";
 
 export async function loader() {
-  const books = await fetchBestsellerBooks();
-  return json({ books });
+  const { data, error } = await supabase
+    .from<BooksResponse>("books")
+    .select("*")
+    .order("created_at", { ascending: false })
+    .limit(1);
+
+  if (error) return json(error, { status: 500 });
+
+  return json(data[0]);
 }
 
+const useBooksData = () => useLoaderData<BooksResponse>();
+
 export default function Index() {
-  const data = useLoaderData();
+  const books = useBooksData();
 
   return (
     <div style={{ fontFamily: "system-ui, sans-serif", lineHeight: "1.4" }}>
@@ -38,7 +48,9 @@ export default function Index() {
           </a>
         </li>
       </ul>
-      <pre>{JSON.stringify(data?.books, undefined, 2)}</pre>
+      {books.data.list.map((book) => (
+        <pre key={book.url} style={{background: "whitesmoke"}}>{JSON.stringify(book, undefined, 2)}</pre>
+      ))}
     </div>
   );
 }

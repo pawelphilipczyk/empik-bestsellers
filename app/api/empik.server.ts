@@ -1,5 +1,6 @@
 import { load } from "cheerio";
 import fetch from "node-fetch";
+import type { Book } from "~/types";
 
 const feed = "https://www.empik.com/bestsellery/ksiazki";
 
@@ -12,15 +13,6 @@ const getPageUrl = (start: string = "0") =>
     start,
     resultsPP: "60",
   });
-
-type Book = {
-  title: string;
-  author: string;
-  image: string;
-  price: string;
-  score: string;
-  url: string;
-};
 
 async function fetchPage(url: string) {
   return fetch(url)
