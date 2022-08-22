@@ -8,6 +8,6 @@ jobs:
     steps:
       - name: Call cron api route
         run: |
-          curl --request POST \
+          curl --request GET \
           --url 'https://empik-bestsellers.vercel.app/cron' \
           --header 'Authorization: Bearer ${{ secrets.CRON_SECRET }}'
