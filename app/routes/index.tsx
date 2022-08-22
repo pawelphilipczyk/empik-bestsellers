@@ -1,6 +1,7 @@
 import { useLoaderData } from "@remix-run/react";
 import { json } from "@remix-run/server-runtime";
 import { supabase } from "~/api/supabase.server";
+import { BooksList } from "~/components/BooksList";
 import type { BooksResponse } from "~/types";
 
 export async function loader() {
@@ -48,9 +49,7 @@ export default function Index() {
           </a>
         </li>
       </ul>
-      {books.data.list.map((book) => (
-        <pre key={book.url} style={{background: "whitesmoke"}}>{JSON.stringify(book, undefined, 2)}</pre>
-      ))}
+      <BooksList books={books.data.list} />
     </div>
   );
 }
