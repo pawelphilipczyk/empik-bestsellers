@@ -1,0 +1,13 @@
+name: 15-minute-cron
+on:
+  schedule:
+    - cron: '*/15 * * * *'
+jobs:
+  cron:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Call cron api route
+        run: |
+          curl --request POST \
+          --url 'https://empik-bestsellers.vercel.app/cron' \
+          --header 'Authorization: Bearer ${{ secrets.CRON_SECRET }}'

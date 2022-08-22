@@ -11,7 +11,7 @@ export const supabase = createClient(
 );
 export async function loader({ request }: LoaderArgs) {
   const authorization = request.headers.get("authorization");
-  if (authorization === `Bearer ${process.env.SUPABASE_SERVICE_API_KEY}`) {
+  if (authorization === `Bearer ${process.env.CRON_SECRET}`) {
     const list = await fetchBestsellerBooks();
     // Insert a row
     const { data, error } = await supabase
