@@ -1,6 +1,9 @@
 import { load } from "cheerio";
-import fetch from "node-fetch";
 import type { Book } from "~/types";
+import type { RequestInfo, RequestInit } from 'node-fetch';
+
+const fetch = (url: RequestInfo, init?: RequestInit) =>
+  import('node-fetch').then(({ default: fetch }) => fetch(url, init));
 
 const feed = "https://www.empik.com/bestsellery/ksiazki";
 
