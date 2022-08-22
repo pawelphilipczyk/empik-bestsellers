@@ -1,6 +1,7 @@
+import type { AnyNode, BasicAcceptedElems } from "cheerio";
 import { load } from "cheerio";
-import type { Book } from "~/types";
 import type { RequestInfo, RequestInit } from 'node-fetch';
+import type { Book } from "~/types";
 
 const fetch = (url: RequestInfo, init?: RequestInit) =>
   import('node-fetch').then(({ default: fetch }) => fetch(url, init));
@@ -26,7 +27,7 @@ function parsePage(html: string) {
   const books: Partial<Book>[] = [];
   const $ = load(html);
 
-  $(".search-list-item").each((i: number, elem: Element) => {
+  $(".search-list-item").each((i: number, elem: BasicAcceptedElems<AnyNode>) => {
     const [, title] = $(".ta-product-title", elem).text().split("\n");
     const author = $(".ta-product-smartauthor", elem).text().trim();
     const image = $("img", elem).attr("lazy-img");
