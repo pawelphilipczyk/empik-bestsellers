@@ -1,7 +1,7 @@
-import type { Book } from "~/types";
+import type { RankedBook } from "~/types";
 
 type Props = {
-  books: Book[];
+  books: RankedBook[] | undefined;
 };
 
 export const BooksTable = ({ books }: Props) => {
@@ -14,21 +14,26 @@ export const BooksTable = ({ books }: Props) => {
           <th>Tytuł</th>
           <th>Autor</th>
           <th>Cena</th>
+          <th>Zmiana</th>
         </tr>
       </thead>
       <tbody>
-        {books.map((book, i) => (
+        {books?.map((book, i) => (
           <tr key={i}>
             <td>{i + 1}</td>
             <td>
-            <a href={book.url} rel="noreferrer" target="_blank">
-              <img src={book.image} alt={book.title} style={{maxHeight: "4em"}} />
-
+              <a href={book.url} rel="noreferrer" target="_blank">
+                <img
+                  src={book.image}
+                  alt={book.title}
+                  style={{ maxHeight: "4em" }}
+                />
               </a>
             </td>
-            <td>{book.title}</td>
+            <td>{book.title} {book.isNew && <strong style={{color: "red"}}>NOWOŚĆ</strong>}</td>
             <td>{book.author}</td>
             <td>{book.price}</td>
+            <td style={{textAlign: "right", color: Number(book.moved) > 0 ? "green" : "red", fontWeight: "bold"}}>{Boolean(book.moved) && book.moved}</td>
           </tr>
         ))}
       </tbody>

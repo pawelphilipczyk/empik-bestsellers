@@ -16,3 +16,7 @@ export type BooksResponse = {
 };
 
 export type DatesResponse = string[];
+
+export type RankedBook = Book & { position: number, moved?: number, isNew?: boolean };
+
+export type BooksMap = Record<string, RankedBook>;
