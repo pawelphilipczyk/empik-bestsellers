@@ -1,3 +1,4 @@
+import type { LoaderFunction } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 import { json } from "@remix-run/server-runtime";
 import { supabase } from "~/api/supabase.server";
@@ -5,7 +6,12 @@ import { BooksTable } from "~/components/BooksTable";
 import { DatesForm } from "~/components/DatesForm";
 import type { BooksResponse, DatesResponse } from "~/types";
 
-export async function loader() {
+type LoaderData = {
+  books: BooksResponse;
+  dates: DatesResponse;
+};
+
+export const loader: LoaderFunction = async ({ params }) => {
   const books = await supabase
     .from<BooksResponse>("books")
     .select("*")
@@ -20,19 +26,14 @@ export async function loader() {
     .order("created_at", { ascending: false })
     .limit(30);
 
-  return json({
+  return json<LoaderData>({
     books: books.data[0],
-    dates: dates.data?.map(({ date }) => date),
+    dates: dates.data?.map(({ date }) => date) || [],
   });
-}
-
-type BooksData = {
-  books: BooksResponse;
-  dates: DatesResponse;
 };
 
 export default function Index() {
-  const { books, dates } = useLoaderData<BooksData>();
+  const { books, dates } = useLoaderData() as LoaderData;
 
   return (
     <main style={{ fontFamily: "system-ui, sans-serif", lineHeight: "1.4" }}>
