@@ -2,28 +2,41 @@ import { useLoaderData } from "@remix-run/react";
 import { json } from "@remix-run/server-runtime";
 import { supabase } from "~/api/supabase.server";
 import { BooksTable } from "~/components/BooksTable";
-import type { BooksResponse } from "~/types";
+import type { BooksResponse, DatesResponse } from "~/types";
 
 export async function loader() {
-  const { data, error } = await supabase
+  const books = await supabase
     .from<BooksResponse>("books")
     .select("*")
     .order("created_at", { ascending: false })
     .limit(1);
 
-  if (error) return json(error, { status: 500 });
+  if (books.error) return json(books.error, { status: 500 });
 
-  return json(data[0]);
+  const dates = await supabase
+    .from<BooksResponse>("books")
+    .select("date")
+    .order("created_at", { ascending: false })
+    .limit(30);
+
+  return json({
+    books: books.data[0],
+    dates: dates.data?.map(({ date }) => date),
+  });
 }
 
-const useBooksData = () => useLoaderData<BooksResponse>();
+type BooksData = {
+  books: BooksResponse;
+  dates: DatesResponse;
+};
 
 export default function Index() {
-  const books = useBooksData();
+  const { books, dates } = useLoaderData<BooksData>();
 
   return (
     <main style={{ fontFamily: "system-ui, sans-serif", lineHeight: "1.4" }}>
       <h1>Empik Bestsellers</h1>
+      <pre>{JSON.stringify(dates, undefined, 2)}</pre>
       <BooksTable books={books.data.list} />
       <footer>
         <nav>

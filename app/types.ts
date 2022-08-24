@@ -14,3 +14,7 @@ export type BooksResponse = {
     list: Book[];
   };
 };
+
+export type DatesResponse = {
+  date: string;
+}[];
