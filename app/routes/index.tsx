@@ -19,6 +19,9 @@ type LoaderData = {
 const getList = (response: PostgrestResponse<BooksResponse>) =>
   response?.data?.[0].data.list || [];
 
+const getDate = (response: PostgrestResponse<BooksResponse>) =>
+  response?.data?.[0].date || [];
+
 export const loader: LoaderFunction = async ({ request }) => {
   const url = new URL(request.url);
   const to = url.searchParams.get("to") || "";
@@ -53,11 +56,11 @@ export default function Index() {
   const nextBooks = getList(books.to).map(withPosition).map(withChanges);
 
   return (
-    <main style={{ fontFamily: "system-ui, sans-serif", lineHeight: "1.4" }}>
+    <main style={{ fontFamily: "system-ui, sans-serif", lineHeight: "1.4", padding: "2em" }}>
       <h1>Empik Bestsellers</h1>
       <DatesForm dates={dates} />
       <section>
-        <h2>{books.to?.data?.[0].date}</h2>
+        <h2>Zmiany od <em>{getDate(books.from)}</em> do <em>{getDate(books.to)}</em></h2>
         {books.to && <BooksTable books={nextBooks} />}
       </section>
 

@@ -19,7 +19,16 @@ export const BooksTable = ({ books }: Props) => {
       </thead>
       <tbody>
         {books?.map((book, i) => (
-          <tr key={i}>
+          <tr
+            key={i}
+            style={
+              book.isNew
+                ? {
+                    fontWeight: "bold",
+                  }
+                : undefined
+            }
+          >
             <td>{i + 1}</td>
             <td>
               <a href={book.url} rel="noreferrer" target="_blank">
@@ -30,10 +39,22 @@ export const BooksTable = ({ books }: Props) => {
                 />
               </a>
             </td>
-            <td>{book.title} {book.isNew && <strong style={{color: "red"}}>NOWOŚĆ</strong>}</td>
+            <td>
+              {book.title}{" "}
+              {book.isNew && <strong style={{ color: "red" }}>NOWOŚĆ</strong>}
+            </td>
             <td>{book.author}</td>
             <td>{book.price}</td>
-            <td style={{textAlign: "right", color: Number(book.moved) > 0 ? "green" : "red", fontWeight: "bold"}}>{Boolean(book.moved) && book.moved}</td>
+            <td
+              style={{
+                textAlign: "right",
+                color: Number(book.moved) > 0 ? "green" : "red",
+                fontWeight: "bold",
+              }}
+            >
+              {Number(book.moved) > 0 && `+`}
+              {Boolean(book.moved) && book.moved}
+            </td>
           </tr>
         ))}
       </tbody>
