@@ -4,17 +4,16 @@ type Props = {
   books: Book[];
 };
 
-export const BooksList = ({ books }: Props) => {
+export const BooksTable = ({ books }: Props) => {
   return (
     <table>
       <thead>
         <tr>
           <th>#</th>
-          <th>Cover</th>
-          <th>Title</th>
-          <th>Author</th>
-          <th>Price</th>
-          <th>Link</th>
+          <th>Okładka</th>
+          <th>Tytuł</th>
+          <th>Autor</th>
+          <th>Cena</th>
         </tr>
       </thead>
       <tbody>
@@ -22,16 +21,14 @@ export const BooksList = ({ books }: Props) => {
           <tr key={i}>
             <td>{i + 1}</td>
             <td>
-              <img src={book.image} alt={book.title} />
+            <a href={book.url} rel="noreferrer" target="_blank">
+              <img src={book.image} alt={book.title} style={{maxHeight: "4em"}} />
+
+              </a>
             </td>
             <td>{book.title}</td>
             <td>{book.author}</td>
             <td>{book.price}</td>
-            <td>
-              <a href={book.url} rel="noreferrer" target="_blank">
-                ▶️
-              </a>
-            </td>
           </tr>
         ))}
       </tbody>
