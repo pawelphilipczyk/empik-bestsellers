@@ -7,18 +7,19 @@ import { DatesForm } from "~/components/DatesForm";
 import type { BooksResponse, DatesResponse } from "~/types";
 
 type LoaderData = {
-  books: BooksResponse;
+  books: BooksResponse | undefined;
   dates: DatesResponse;
 };
 
-export const loader: LoaderFunction = async ({ params }) => {
-  const books = await supabase
-    .from<BooksResponse>("books")
-    .select("*")
-    .order("created_at", { ascending: false })
-    .limit(1);
+export const loader: LoaderFunction = async ({ request }) => {
+  const url = new URL(request.url);
+  const date = url.searchParams.get("to") || "";
 
-  if (books.error) return json(books.error, { status: 500 });
+  const books = date
+    ? await supabase.from<BooksResponse>("books").select("*").eq("date", date)
+    : undefined;
+
+  if (books?.error) return json(books.error, { status: 500 });
 
   const dates = await supabase
     .from<BooksResponse>("books")
@@ -27,7 +28,7 @@ export const loader: LoaderFunction = async ({ params }) => {
     .limit(30);
 
   return json<LoaderData>({
-    books: books.data[0],
+    books: books?.data[0],
     dates: dates.data?.map(({ date }) => date) || [],
   });
 };
@@ -39,7 +40,8 @@ export default function Index() {
     <main style={{ fontFamily: "system-ui, sans-serif", lineHeight: "1.4" }}>
       <h1>Empik Bestsellers</h1>
       <DatesForm dates={dates} />
-      <BooksTable books={books.data.list} />
+      <h2>{books?.date}</h2>
+      {books?.data && <BooksTable books={books.data.list} />}
       <footer>
         <nav>
           <ul>

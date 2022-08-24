@@ -1,4 +1,4 @@
-import { Form } from "@remix-run/react";
+import { Form, useSearchParams } from "@remix-run/react";
 import type { DatesResponse } from "~/types";
 
 type Props = {
@@ -6,11 +6,16 @@ type Props = {
 };
 
 export const DatesForm = ({ dates }: Props) => {
+  const [searchParams] = useSearchParams();
+
+  const from = searchParams.get("from") || undefined;
+  const to = searchParams.get("to") || undefined;
+
   return (
     <Form action="">
       <fieldset>
         <legend>Daty</legend>
-        <select name="from">
+        <select name="from" defaultValue={from}>
           {[...dates.slice(1)].reverse().map((date) => (
             <option value={date} key={date}>
               {date}
@@ -27,7 +32,7 @@ export const DatesForm = ({ dates }: Props) => {
         >
           ⟷
         </code>
-        <select name="to">
+        <select name="to" defaultValue={to}>
           {dates.slice(0, dates.length - 2).map((date) => (
             <option value={date} key={date}>
               {date}
