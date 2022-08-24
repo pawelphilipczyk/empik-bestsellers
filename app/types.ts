@@ -15,6 +15,4 @@ export type BooksResponse = {
   };
 };
 
-export type DatesResponse = {
-  date: string;
-}[];
+export type DatesResponse = string[];

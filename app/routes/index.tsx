@@ -2,6 +2,7 @@ import { useLoaderData } from "@remix-run/react";
 import { json } from "@remix-run/server-runtime";
 import { supabase } from "~/api/supabase.server";
 import { BooksTable } from "~/components/BooksTable";
+import { DatesForm } from "~/components/DatesForm";
 import type { BooksResponse, DatesResponse } from "~/types";
 
 export async function loader() {
@@ -36,7 +37,7 @@ export default function Index() {
   return (
     <main style={{ fontFamily: "system-ui, sans-serif", lineHeight: "1.4" }}>
       <h1>Empik Bestsellers</h1>
-      <pre>{JSON.stringify(dates, undefined, 2)}</pre>
+      <DatesForm dates={dates} />
       <BooksTable books={books.data.list} />
       <footer>
         <nav>
