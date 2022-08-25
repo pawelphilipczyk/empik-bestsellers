@@ -29,7 +29,7 @@ export const BooksTable = ({ books }: Props) => {
                 : undefined
             }
           >
-            <td>{i + 1}</td>
+            <td>{book.position + 1}</td>
             <td>
               <a href={book.url} rel="noreferrer" target="_blank">
                 <img

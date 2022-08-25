@@ -1,13 +1,14 @@
 import type { LoaderFunction } from "@remix-run/node";
-import { useLoaderData } from "@remix-run/react";
+import { useLoaderData, useParams } from "@remix-run/react";
 import { json } from "@remix-run/server-runtime";
 import type { PostgrestResponse } from "@supabase/supabase-js";
 import { supabase } from "~/api/supabase.server";
 import { BooksTable } from "~/components/BooksTable";
-import { DatesForm } from "~/components/DatesForm";
+import { BooksForm } from "~/components/BooksForm";
 import { PageFooter } from "~/components/PageFooter";
-import type { BooksResponse, DatesResponse } from "~/types";
+import type { BooksResponse, DatesResponse, RankedBook } from "~/types";
 import { getRankedBooks } from "~/utils/compare";
+import { useSearch } from "~/hooks/useSearch";
 
 type LoaderData = {
   books: {
@@ -22,6 +23,8 @@ const getList = (response: PostgrestResponse<BooksResponse>) =>
 
 const getDate = (response: PostgrestResponse<BooksResponse>) =>
   response?.data?.[0].date || [];
+
+const isNew = (book: RankedBook) => book.isNew;
 
 export const loader: LoaderFunction = async ({ request }) => {
   const url = new URL(request.url);
@@ -53,7 +56,9 @@ export const loader: LoaderFunction = async ({ request }) => {
 
 export default function Index() {
   const { books, dates } = useLoaderData() as LoaderData;
-  const rankedBooks = getRankedBooks(getList(books.prev), getList(books.next));
+  const { show } = useSearch(["show"]);
+  const allBooks = getRankedBooks(getList(books.prev), getList(books.next));
+  const showBooks = show === "all" ? allBooks : allBooks.filter(isNew);
 
   return (
     <main
@@ -65,14 +70,14 @@ export default function Index() {
     >
       <header>
         {/* <h1>Empik Bestsellers</h1> */}
-        <DatesForm dates={dates} />
+        <BooksForm dates={dates} />
       </header>
       <section>
         <h2>
           Zmiany od <em>{getDate(books.prev)}</em> do{" "}
           <em>{getDate(books.next)}</em>
         </h2>
-        {books.next && <BooksTable books={rankedBooks} />}
+        {books.next && <BooksTable books={showBooks} />}
       </section>
 
       <PageFooter />
