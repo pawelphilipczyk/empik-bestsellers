@@ -17,3 +17,9 @@ export const createBookComparator =
     const moved = map[book.title]?.position - book?.position;
     return { ...book, isNew, moved };
   };
+
+export const getRankedBooks = (prev: Book[], next: Book[]) => {
+  const prevBooks = getBooksMap(prev);
+  const withChanges = createBookComparator(prevBooks);
+  return next.map(withPosition).map(withChanges);
+}

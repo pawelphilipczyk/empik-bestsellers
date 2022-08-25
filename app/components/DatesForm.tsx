@@ -8,14 +8,14 @@ type Props = {
 export const DatesForm = ({ dates }: Props) => {
   const [searchParams] = useSearchParams();
 
-  const from = searchParams.get("from") || undefined;
-  const to = searchParams.get("to") || undefined;
+  const prev = searchParams.get("prev") || undefined;
+  const next = searchParams.get("next") || undefined;
 
   return (
     <Form action="">
       <fieldset>
         <legend>Daty</legend>
-        <select name="from" defaultValue={from}>
+        <select name="prev" defaultValue={prev}>
           {[...dates.slice(1)].reverse().map((date) => (
             <option value={date} key={date}>
               {date}
@@ -32,7 +32,7 @@ export const DatesForm = ({ dates }: Props) => {
         >
           ⟷
         </code>
-        <select name="to" defaultValue={to}>
+        <select name="next" defaultValue={next}>
           {dates.slice(0, dates.length - 2).map((date) => (
             <option value={date} key={date}>
               {date}

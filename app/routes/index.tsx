@@ -7,12 +7,12 @@ import { BooksTable } from "~/components/BooksTable";
 import { DatesForm } from "~/components/DatesForm";
 import { PageFooter } from "~/components/PageFooter";
 import type { BooksResponse, DatesResponse } from "~/types";
-import { createBookComparator, getBooksMap, withPosition } from "~/utils/compare";
+import { getRankedBooks } from "~/utils/compare";
 
 type LoaderData = {
   books: {
-    to: PostgrestResponse<BooksResponse>;
-    from: PostgrestResponse<BooksResponse>;
+    prev: PostgrestResponse<BooksResponse>;
+    next: PostgrestResponse<BooksResponse>;
   };
   dates: DatesResponse;
 };
@@ -25,8 +25,8 @@ const getDate = (response: PostgrestResponse<BooksResponse>) =>
 
 export const loader: LoaderFunction = async ({ request }) => {
   const url = new URL(request.url);
-  const to = url.searchParams.get("to") || "";
-  const from = url.searchParams.get("from") || "";
+  const prev = url.searchParams.get("prev") || "";
+  const next = url.searchParams.get("next") || "";
 
   const dates = await supabase
     .from<BooksResponse>("books")
@@ -35,11 +35,14 @@ export const loader: LoaderFunction = async ({ request }) => {
     .limit(30);
 
   const books = {
-    from: await supabase
+    prev: await supabase
       .from<BooksResponse>("books")
       .select("*")
-      .eq("date", from),
-    to: await supabase.from<BooksResponse>("books").select("*").eq("date", to),
+      .eq("date", prev),
+    next: await supabase
+      .from<BooksResponse>("books")
+      .select("*")
+      .eq("date", next),
   };
 
   return json<LoaderData>({
@@ -50,21 +53,26 @@ export const loader: LoaderFunction = async ({ request }) => {
 
 export default function Index() {
   const { books, dates } = useLoaderData() as LoaderData;
-
-  const prevBooks = getBooksMap(getList(books.from));
-
-  const withChanges = createBookComparator(prevBooks);
-  const nextBooks = getList(books.to).map(withPosition).map(withChanges);
+  const rankedBooks = getRankedBooks(getList(books.prev), getList(books.next));
 
   return (
-    <main style={{ fontFamily: "system-ui, sans-serif", lineHeight: "1.4", padding: "2em" }}>
+    <main
+      style={{
+        fontFamily: "system-ui, sans-serif",
+        lineHeight: "1.4",
+        padding: "2em",
+      }}
+    >
       <header>
         {/* <h1>Empik Bestsellers</h1> */}
         <DatesForm dates={dates} />
       </header>
       <section>
-        <h2>Zmiany od <em>{getDate(books.from)}</em> do <em>{getDate(books.to)}</em></h2>
-        {books.to && <BooksTable books={nextBooks} />}
+        <h2>
+          Zmiany od <em>{getDate(books.prev)}</em> do{" "}
+          <em>{getDate(books.next)}</em>
+        </h2>
+        {books.next && <BooksTable books={rankedBooks} />}
       </section>
 
       <PageFooter />
