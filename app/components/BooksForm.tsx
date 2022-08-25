@@ -14,7 +14,7 @@ export const BooksForm = ({ dates }: Props) => {
 
   return (
     <Form action="">
-      <fieldset>
+      <fieldset style={{ borderColor: "lightgray", borderStyle: "solid" }}>
         <legend>Filtry</legend>
         <select name="prev" defaultValue={params.prev}>
           {[...dates.slice(1)].reverse().map((date) => (
@@ -47,7 +47,10 @@ export const BooksForm = ({ dates }: Props) => {
           <option value="new">Nowości</option>
           <option value="all">Wszystkie</option>
         </select>
-        <button style={{ marginLeft: 10, marginRight: 10 }} disabled={isLoading}>
+        <button
+          style={{ marginLeft: 10, marginRight: 10 }}
+          disabled={isLoading}
+        >
           Porównaj
         </button>
         {isLoading && <em>Wczytuję...</em>}
