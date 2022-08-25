@@ -1,5 +1,7 @@
 import type { Filter, RankedBook } from "~/types";
 
+const host = "https://www.empik.com";
+
 type Props = {
   books: RankedBook[] | undefined;
   show: Filter["show"];
@@ -55,7 +57,7 @@ export const BooksTable = ({ books, show }: Props) => {
               {book.moved && Boolean(book.moved) && Math.abs(book.moved)}
             </td>
             <td style={{ verticalAlign: "middle" }}>
-              <a href={book.url} rel="noreferrer" target="_blank">
+              <a href={host + book.url} rel="noreferrer" target="_blank">
                 <img
                   src={book.image}
                   alt={book.title}
