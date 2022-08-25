@@ -5,6 +5,7 @@ import type { PostgrestResponse } from "@supabase/supabase-js";
 import { supabase } from "~/api/supabase.server";
 import { BooksTable } from "~/components/BooksTable";
 import { DatesForm } from "~/components/DatesForm";
+import { PageFooter } from "~/components/PageFooter";
 import type { BooksResponse, DatesResponse } from "~/types";
 import { createBookComparator, getBooksMap, withPosition } from "~/utils/compare";
 
@@ -57,42 +58,16 @@ export default function Index() {
 
   return (
     <main style={{ fontFamily: "system-ui, sans-serif", lineHeight: "1.4", padding: "2em" }}>
-      <h1>Empik Bestsellers</h1>
-      <DatesForm dates={dates} />
+      <header>
+        {/* <h1>Empik Bestsellers</h1> */}
+        <DatesForm dates={dates} />
+      </header>
       <section>
         <h2>Zmiany od <em>{getDate(books.from)}</em> do <em>{getDate(books.to)}</em></h2>
         {books.to && <BooksTable books={nextBooks} />}
       </section>
 
-      <footer>
-        <nav>
-          <ul>
-            <li>
-              <a
-                target="_blank"
-                href="https://www.empik.com/bestsellery/ksiazki"
-                rel="noreferrer"
-              >
-                TOP 100 Books
-              </a>
-            </li>
-            <li>
-              <a
-                target="_blank"
-                href="https://app.supabase.com/project/ffhywchyftfmmkbszwub"
-                rel="noreferrer"
-              >
-                Supabase
-              </a>
-            </li>
-            <li>
-              <a target="_blank" href="https://remix.run/docs" rel="noreferrer">
-                Remix Docs
-              </a>
-            </li>
-          </ul>
-        </nav>
-      </footer>
+      <PageFooter />
     </main>
   );
 }
