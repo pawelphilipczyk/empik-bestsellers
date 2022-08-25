@@ -1,4 +1,4 @@
-import { Form } from "@remix-run/react";
+import { Form, useTransition } from "@remix-run/react";
 import { useSearch } from "~/hooks/useSearch";
 import type { DatesResponse } from "~/types";
 
@@ -8,11 +8,14 @@ type Props = {
 
 export const BooksForm = ({ dates }: Props) => {
   const params = useSearch(["prev", "next", "show"]);
+  const transition = useTransition();
+  const isLoading =
+    transition.state === "loading" || transition.state === "submitting";
 
   return (
     <Form action="">
       <fieldset>
-        <legend>Daty</legend>
+        <legend>Filtry</legend>
         <select name="prev" defaultValue={params.prev}>
           {[...dates.slice(1)].reverse().map((date) => (
             <option value={date} key={date}>
@@ -44,7 +47,10 @@ export const BooksForm = ({ dates }: Props) => {
           <option value="new">Nowości</option>
           <option value="all">Wszystkie</option>
         </select>
-        <button style={{ marginLeft: 10 }}>Porównaj</button>
+        <button style={{ marginLeft: 10, marginRight: 10 }} disabled={isLoading}>
+          Porównaj
+        </button>
+        {isLoading && <em>Wczytuję...</em>}
       </fieldset>
     </Form>
   );

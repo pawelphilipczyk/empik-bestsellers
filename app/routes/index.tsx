@@ -1,5 +1,5 @@
 import type { LoaderFunction } from "@remix-run/node";
-import { useLoaderData, useTransition } from "@remix-run/react";
+import { useLoaderData } from "@remix-run/react";
 import { json } from "@remix-run/server-runtime";
 import type { PostgrestResponse } from "@supabase/supabase-js";
 import { supabase } from "~/api/supabase.server";
@@ -61,9 +61,7 @@ export const loader: LoaderFunction = async ({ request }) => {
 export default function Index() {
   const { books, dates, from, to } = useLoaderData() as LoaderData;
   const hasBooks = from && to;
-  const transition = useTransition();
-  const isLoading = transition.state === 'loading' || transition.state === 'submitting'
-  const { show } = useSearch(['show']);
+  const { show } = useSearch(["show"]);
 
   return (
     <main
@@ -77,14 +75,13 @@ export default function Index() {
         <h1>Empik Bestsellers</h1>
         <BooksForm dates={dates} />
       </header>
-      {isLoading && <p>Wczytuję...</p>}
       <section>
         {hasBooks && (
           <h2>
             Zmiany od <em>{from}</em> do <em>{to}</em>
           </h2>
         )}
-        {hasBooks && <BooksTable books={books} show={show as Filter['show']} />}
+        {hasBooks && <BooksTable books={books} show={show as Filter["show"]} />}
       </section>
 
       <PageFooter />

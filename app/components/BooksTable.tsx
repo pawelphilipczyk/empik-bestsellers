@@ -36,7 +36,7 @@ export const BooksTable = ({ books, show }: Props) => {
                 <img
                   src={book.image}
                   alt={book.title}
-                  style={{ maxHeight: "4em" }}
+                  style={{ height: "4em" }}
                 />
               </a>
             </td>
