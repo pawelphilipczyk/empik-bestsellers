@@ -1,28 +1,26 @@
 import type { LoaderFunction } from "@remix-run/node";
-import { useLoaderData, useParams } from "@remix-run/react";
+import { useLoaderData } from "@remix-run/react";
 import { json } from "@remix-run/server-runtime";
 import type { PostgrestResponse } from "@supabase/supabase-js";
 import { supabase } from "~/api/supabase.server";
-import { BooksTable } from "~/components/BooksTable";
 import { BooksForm } from "~/components/BooksForm";
+import { BooksTable } from "~/components/BooksTable";
 import { PageFooter } from "~/components/PageFooter";
 import type { BooksResponse, DatesResponse, RankedBook } from "~/types";
 import { getRankedBooks } from "~/utils/compare";
-import { useSearch } from "~/hooks/useSearch";
 
 type LoaderData = {
-  books: {
-    prev: PostgrestResponse<BooksResponse>;
-    next: PostgrestResponse<BooksResponse>;
-  };
+  books: RankedBook[];
   dates: DatesResponse;
+  from: string;
+  to: string;
 };
 
 const getList = (response: PostgrestResponse<BooksResponse>) =>
   response?.data?.[0].data.list || [];
 
 const getDate = (response: PostgrestResponse<BooksResponse>) =>
-  response?.data?.[0].date || [];
+  response?.data?.[0].date || "";
 
 const isNew = (book: RankedBook) => book.isNew;
 
@@ -30,6 +28,7 @@ export const loader: LoaderFunction = async ({ request }) => {
   const url = new URL(request.url);
   const prev = url.searchParams.get("prev") || "";
   const next = url.searchParams.get("next") || "";
+  const show = url.searchParams.get("show") || "";
 
   const dates = await supabase
     .from<BooksResponse>("books")
@@ -37,28 +36,29 @@ export const loader: LoaderFunction = async ({ request }) => {
     .order("created_at", { ascending: false })
     .limit(30);
 
-  const books = {
-    prev: await supabase
-      .from<BooksResponse>("books")
-      .select("*")
-      .eq("date", prev),
-    next: await supabase
-      .from<BooksResponse>("books")
-      .select("*")
-      .eq("date", next),
-  };
+  const prevBooks = await supabase
+    .from<BooksResponse>("books")
+    .select("*")
+    .eq("date", prev);
+
+  const nextBooks = await supabase
+    .from<BooksResponse>("books")
+    .select("*")
+    .eq("date", next);
+
+  const rankdedBooks = getRankedBooks(getList(prevBooks), getList(nextBooks));
+  const books = show === "all" ? rankdedBooks : rankdedBooks.filter(isNew);
 
   return json<LoaderData>({
     books,
     dates: dates.data?.map(({ date }) => date) || [],
+    from: getDate(prevBooks),
+    to: getDate(nextBooks),
   });
 };
 
 export default function Index() {
-  const { books, dates } = useLoaderData() as LoaderData;
-  const { show } = useSearch(["show"]);
-  const allBooks = getRankedBooks(getList(books.prev), getList(books.next));
-  const showBooks = show === "all" ? allBooks : allBooks.filter(isNew);
+  const { books, dates, from, to } = useLoaderData() as LoaderData;
 
   return (
     <main
@@ -69,15 +69,14 @@ export default function Index() {
       }}
     >
       <header>
-        {/* <h1>Empik Bestsellers</h1> */}
+        <h1>Empik Bestsellers</h1>
         <BooksForm dates={dates} />
       </header>
       <section>
         <h2>
-          Zmiany od <em>{getDate(books.prev)}</em> do{" "}
-          <em>{getDate(books.next)}</em>
+          Zmiany od <em>{from}</em> do <em>{to}</em>
         </h2>
-        {books.next && <BooksTable books={showBooks} />}
+        {books && <BooksTable books={books} />}
       </section>
 
       <PageFooter />
