@@ -11,20 +11,6 @@ export const PageFooter = () => (
             TOP 100 Books
           </a>
         </li>
-        <li>
-          <a
-            target="_blank"
-            href="https://app.supabase.com/project/ffhywchyftfmmkbszwub"
-            rel="noreferrer"
-          >
-            Supabase
-          </a>
-        </li>
-        <li>
-          <a target="_blank" href="https://remix.run/docs" rel="noreferrer">
-            Remix Docs
-          </a>
-        </li>
       </ul>
     </nav>
   </footer>
