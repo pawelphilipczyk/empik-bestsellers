@@ -6,7 +6,8 @@ import { supabase } from "~/api/supabase.server";
 import { BooksForm } from "~/components/BooksForm";
 import { BooksTable } from "~/components/BooksTable";
 import { PageFooter } from "~/components/PageFooter";
-import type { BooksResponse, DatesResponse, RankedBook } from "~/types";
+import { useSearch } from "~/hooks/useSearch";
+import type { BooksResponse, DatesResponse, Filter, RankedBook } from "~/types";
 import { getRankedBooks } from "~/utils/compare";
 
 type LoaderData = {
@@ -62,6 +63,7 @@ export default function Index() {
   const hasBooks = from && to;
   const transition = useTransition();
   const isLoading = transition.state === 'loading' || transition.state === 'submitting'
+  const { show } = useSearch(['show']);
 
   return (
     <main
@@ -82,7 +84,7 @@ export default function Index() {
             Zmiany od <em>{from}</em> do <em>{to}</em>
           </h2>
         )}
-        {hasBooks && <BooksTable books={books} />}
+        {hasBooks && <BooksTable books={books} show={show as Filter['show']} />}
       </section>
 
       <PageFooter />

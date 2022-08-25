@@ -1,10 +1,11 @@
-import type { RankedBook } from "~/types";
+import type { Filter, RankedBook } from "~/types";
 
 type Props = {
   books: RankedBook[] | undefined;
+  show: Filter["show"];
 };
 
-export const BooksTable = ({ books }: Props) => {
+export const BooksTable = ({ books, show }: Props) => {
   return (
     <table>
       <thead>
@@ -22,7 +23,7 @@ export const BooksTable = ({ books }: Props) => {
           <tr
             key={i}
             style={
-              book.isNew
+              book.isNew && show !== "new"
                 ? {
                     fontWeight: "bold",
                   }
