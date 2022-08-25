@@ -59,6 +59,7 @@ export const loader: LoaderFunction = async ({ request }) => {
 
 export default function Index() {
   const { books, dates, from, to } = useLoaderData() as LoaderData;
+  const hasBooks = from && to;
 
   return (
     <main
@@ -73,10 +74,12 @@ export default function Index() {
         <BooksForm dates={dates} />
       </header>
       <section>
-        <h2>
-          Zmiany od <em>{from}</em> do <em>{to}</em>
-        </h2>
-        {books && <BooksTable books={books} />}
+        {hasBooks && (
+          <h2>
+            Zmiany od <em>{from}</em> do <em>{to}</em>
+          </h2>
+        )}
+        {hasBooks && <BooksTable books={books} />}
       </section>
 
       <PageFooter />
