@@ -1,15 +1,16 @@
+import type { HTMLAttributes } from "react";
 import type { Filter, RankedBook } from "~/types";
 
 const host = "https://www.empik.com";
 
-type Props = {
+type Props = HTMLAttributes<HTMLTableElement> & {
   books: RankedBook[] | undefined;
   show: Filter["show"];
 };
 
-export const BooksTable = ({ books, show }: Props) => {
+export const BooksTable = ({ books, show, ...props }: Props) => {
   return (
-    <table style={{ borderCollapse: "collapse" }}>
+    <table style={{ borderCollapse: "collapse" }} {...props}>
       <thead>
         <tr>
           <th>#</th>

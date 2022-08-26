@@ -1,5 +1,9 @@
-export const PageFooter = () => (
-  <footer>
+import type { HTMLAttributes} from 'react';
+
+type Props = HTMLAttributes<HTMLDivElement>
+
+export const PageFooter = (props: Props) => (
+  <footer {...props}>
     <nav>
       <ul>
         <li>

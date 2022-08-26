@@ -1,19 +1,20 @@
 import { Form, useTransition } from "@remix-run/react";
+import type { HTMLAttributes } from "react";
 import { useSearch } from "~/hooks/useSearch";
 import type { DatesResponse } from "~/types";
 
-type Props = {
+type Props = HTMLAttributes<HTMLFormElement> & {
   dates: DatesResponse;
 };
 
-export const BooksForm = ({ dates }: Props) => {
+export const BooksForm = ({ dates, ...rest }: Props) => {
   const params = useSearch(["prev", "next", "show"]);
   const transition = useTransition();
   const isLoading =
     transition.state === "loading" || transition.state === "submitting";
 
   return (
-    <Form action="">
+    <Form action="" {...rest}>
       <fieldset style={{ borderColor: "lightgray", borderStyle: "solid" }}>
         <legend>Filtry</legend>
         <select name="prev" defaultValue={params.prev}>
