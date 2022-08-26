@@ -72,7 +72,7 @@ export default function Index() {
       }}
     >
       <header>
-        <h1>Empik Bestsellers</h1>
+        <h1>Top Książki</h1>
         <BooksForm dates={dates} />
       </header>
       <section>
