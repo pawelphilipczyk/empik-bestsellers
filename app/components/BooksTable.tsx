@@ -1,4 +1,5 @@
 import type { HTMLAttributes } from "react";
+import { useState } from "react";
 import type { Filter, RankedBook } from "~/types";
 
 const host = "https://www.empik.com";
@@ -9,6 +10,8 @@ type Props = HTMLAttributes<HTMLTableElement> & {
 };
 
 export const BooksTable = ({ books, show, ...props }: Props) => {
+  const [active, setActive] = useState<number>();
+
   return (
     <table style={{ borderCollapse: "collapse" }} {...props}>
       <thead>
@@ -24,13 +27,12 @@ export const BooksTable = ({ books, show, ...props }: Props) => {
         {books?.map((book, i) => (
           <tr
             key={i}
+            onClick={() => setActive(active === i ? undefined : i)}
             style={{
               borderBottom: "1px solid lightgray",
-              ...(book.isNew && show !== "new"
-                ? {
-                    fontWeight: "bold",
-                  }
-                : undefined),
+              ...(i % 2 === 0 && { backgroundColor: "snow" }),
+              ...(active === i && { backgroundColor: "lightyellow" }),
+              ...(book.isNew && show !== "new" && { fontWeight: "bold" }),
             }}
           >
             <td>{book.position + 1}</td>
@@ -57,7 +59,7 @@ export const BooksTable = ({ books, show, ...props }: Props) => {
               {Number(book.moved) < 0 && `↓`}
               {book.moved && Boolean(book.moved) && Math.abs(book.moved)}
             </td>
-            <td style={{ verticalAlign: "middle" }}>
+            <td style={{ verticalAlign: "middle", width: "4em" }}>
               <a href={host + book.url} rel="noreferrer" target="_blank">
                 <img
                   src={book.image}
