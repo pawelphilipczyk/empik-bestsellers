@@ -2,6 +2,7 @@ import { Form, useTransition } from "@remix-run/react";
 import type { HTMLAttributes } from "react";
 import { useSearch } from "~/hooks/useSearch";
 import type { DatesResponse } from "~/types";
+import { dateToISOString } from "~/utils/date";
 
 type Props = HTMLAttributes<HTMLFormElement> & {
   dates: DatesResponse;
@@ -13,17 +14,28 @@ export const BooksForm = ({ dates, ...rest }: Props) => {
   const isLoading =
     transition.state === "loading" || transition.state === "submitting";
 
+  const today = new Date();
+  const lastWeek = new Date(Date.now() - 604800000);
+
+  const defaultValue = {
+    next: [dateToISOString(today), dates[0]].sort()[0],
+    prev: [dateToISOString(lastWeek), dates[dates.length - 1]].sort()[0],
+  };
+  const dateProps = {
+    max: dates[0],
+    min: dates[dates.length - 1],
+  };
+
   return (
     <Form action="" {...rest}>
       <fieldset style={{ borderColor: "lightgray", borderStyle: "solid" }}>
         <legend>Filtry</legend>
-        <select name="prev" defaultValue={params.prev}>
-          {[...dates.slice(1)].reverse().map((date) => (
-            <option value={date} key={date}>
-              {date}
-            </option>
-          ))}
-        </select>
+        <input
+          type="date"
+          name="prev"
+          {...dateProps}
+          defaultValue={defaultValue.prev}
+        />
         <code
           style={{
             display: "inline-block",
@@ -34,13 +46,12 @@ export const BooksForm = ({ dates, ...rest }: Props) => {
         >
           ⟷
         </code>
-        <select name="next" defaultValue={params.next}>
-          {dates.slice(0, dates.length - 2).map((date) => (
-            <option value={date} key={date}>
-              {date}
-            </option>
-          ))}
-        </select>
+        <input
+          type="date"
+          name="next"
+          {...dateProps}
+          defaultValue={defaultValue.next}
+        />
         <label htmlFor="show" style={{ marginLeft: 10, marginRight: 10 }}>
           Pokaż
         </label>
