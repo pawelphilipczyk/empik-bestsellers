@@ -9,5 +9,5 @@ jobs:
       - name: Call cron api route
         run: |
           curl --request GET \
-          --url 'https://empik-bestsellers.vercel.app/cron' \
+          --url 'https://book-chart.vercel.app/cron' \
           --header 'Authorization: Bearer ${{ secrets.CRON_SECRET }}'
