@@ -6,25 +6,25 @@
     "dev": "remix dev"
   },
   "dependencies": {
-    "@actions/core": "^1.9.1",
-    "@remix-run/node": "^1.6.8",
-    "@remix-run/react": "^1.6.8",
-    "@remix-run/vercel": "^1.6.8",
-    "@supabase/supabase-js": "^1.35.6",
-    "@vercel/node": "^2.4.4",
-    "cheerio": "^1.0.0-rc.12",
+    "@actions/core": "1",
+    "@remix-run/node": "1",
+    "@remix-run/react": "1",
+    "@remix-run/vercel": "1",
+    "@supabase/supabase-js": "1",
+    "@vercel/node": "2",
+    "cheerio": "1",
     "node-fetch": "^3.2.10",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react": "18",
+    "react-dom": "18"
   },
   "devDependencies": {
-    "@remix-run/dev": "^1.6.8",
-    "@remix-run/eslint-config": "^1.6.8",
-    "@remix-run/serve": "^1.6.8",
-    "@types/react": "^18.0.15",
-    "@types/react-dom": "^18.0.6",
-    "eslint": "^8.20.0",
-    "typescript": "^4.7.4"
+    "@remix-run/dev": "1",
+    "@remix-run/eslint-config": "1",
+    "@remix-run/serve": "1",
+    "@types/react": "18",
+    "@types/react-dom": "18",
+    "eslint": "8",
+    "typescript": "4"
   },
   "engines": {
     "node": ">=14"
